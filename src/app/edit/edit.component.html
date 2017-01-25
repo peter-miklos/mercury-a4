@@ -17,8 +17,13 @@
       <input type="text" name="zip" id="zip" [(ngModel)]="address.zip" />
     </address>
   </fieldset>
-
-  <button type="button" name="save" (click)="save()">Save</button>
+</div>
+<div *ngIf="!person">
+  No person found.
+</div>
+<div>
+  <button *ngIf="person && !loading" type="button" name="save" (click)="save()">Save</button>
+  <button type="button" name="backToSearch" *ngIf="!loading" (click)="gotoSearch()">Back to Search</button>
 </div>
 <div *ngIf="loading">
   Submitting...
