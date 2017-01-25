@@ -1,0 +1,30 @@
+<div class="" *ngIf="person && !loading">
+  <h3>{{person.name}} (id: {{person.id}})</h3>
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" name="name" [(ngModel)]="person.name">
+  </div>
+  <div>
+    <label for="phone">Phone: </label>
+    <input type="text" name="phone" [(ngModel)]="person.phone">
+  </div>
+  <fieldset>
+    <legend>Address:</legend>
+    <address>
+      <input type="text" name="street" id="street" [(ngModel)]="address.street" />
+      <input type="text" name="city" id="city" [(ngModel)]="address.city" />
+      <input type="text" name="state" id="state" [(ngModel)]="address.state" />
+      <input type="text" name="zip" id="zip" [(ngModel)]="address.zip" />
+    </address>
+  </fieldset>
+</div>
+<div *ngIf="!person">
+  No person found.
+</div>
+<div>
+  <button *ngIf="person && !loading" type="button" name="save" (click)="save()">Save</button>
+  <button type="button" name="backToSearch" *ngIf="!loading" (click)="gotoSearch()">Back to Search</button>
+</div>
+<div *ngIf="loading">
+  Submitting...
+</div>

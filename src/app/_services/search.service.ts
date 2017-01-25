@@ -5,15 +5,21 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class SearchService {
 
-  constructor(
-    private http: Http
-  ) { }
+  constructor(private http: Http) { }
 
   getAll(): Promise<any> {
     return this.http.get('app/shared/search/data/people.json')
                .toPromise()
-               .then((res: Response) => res.json())
+               .then((res: Response) => {
+                 return this.addPersonsToSession(res.json());
+               })
                .catch(this.handleError)
+  }
+
+  getPerson(id: number) {
+    return this.getAll().then(data => {
+      return data.find(p => p.id === id)
+    });
   }
 
   search(q: string) {
@@ -33,11 +39,27 @@ export class SearchService {
     });
   }
 
+  save(person: any = {}): void {
+    let persons = JSON.parse(sessionStorage.getItem('persons'));
+    let index = persons.findIndex(p => p.id === person.id)
+    if (index != -1) {
+      persons.splice(index, 1);
+      persons.push(person);
+      sessionStorage.setItem('persons', JSON.stringify(persons));
+    }
+  }
+
+  private addPersonsToSession(data: any) {
+    data = data.sort((a, b) => a.name - b.name);
+    sessionStorage.getItem('persons') ? sessionStorage.getItem('persons')
+          : sessionStorage.setItem('persons', JSON.stringify(data));
+    return JSON.parse(sessionStorage.getItem('persons'));
+  }
+
   private handleError(error: any): Promise<any> {
     console.error("An error occured", error);
     return Promise.reject(error.message || error);
   }
-
 }
 
 export class Person {
