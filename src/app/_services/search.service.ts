@@ -16,6 +16,23 @@ export class SearchService {
                .catch(this.handleError)
   }
 
+  search(q: string) {
+    if(!q || q === "*") {
+      q = '';
+    } else {
+      q = q.toLowerCase();
+    }
+    return this.getAll().then(data => {
+      let results: any[] = [];
+      data.map(item => {
+        if (JSON.stringify(item).toLowerCase().includes(q)) {
+          results.push(item);
+        }
+      });
+      return results;
+    });
+  }
+
   private handleError(error: any): Promise<any> {
     console.error("An error occured", error);
     return Promise.reject(error.message || error);

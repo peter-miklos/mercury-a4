@@ -19,7 +19,7 @@ export class SearchComponent implements OnInit {
   }
 
   search(): void {
-    this.searchService.getAll().then(
+    this.searchService.search(this.query).then(
       data => { this.searchResults = data; },
       error => console.error(error)
     )
