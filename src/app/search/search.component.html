@@ -1,23 +1,18 @@
-<h2>Search</h2>
-<form>
-  <input type="search" name="query" [(ngModel)]="query" (keyup.enter)="search()">
-  <button type="button" (click)="search()">Search</button>
-  <button type="button" (click)="showAll()">Show all</button>
-</form>
-<table *ngIf="searchResults">
-  <thead>
-    <th>Name</th>
-    <th>Phone</th>
-    <th>Address</th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let person of searchResults; let i = index">
-      <td><a routerLink="/edit/{{person.id}}" routerLinkActive="active">{{ person.name }}</a></td>
-      <td>{{ person.phone }}</td>
-      <td>
-        {{ person.address.street }}<br />
-        {{ person.address.city }}, {{ person.address.state }} {{ person.address.zip }}
-      </td>
-    </tr>
-  </tbody>
-</table>
+<md-grid-list cols="1">
+  <h2>Search</h2>
+  <form>
+    <md-input-container>
+      <input md-input type="search" name="query" [(ngModel)]="query" (keyup.enter)="search()" />
+    </md-input-container>
+    <button md-mini-fab color="primary" type="button" (click)="search()"><md-icon>search</md-icon></button>
+    <button md-mini-fab color="primary" type="button" (click)="showAll()"><md-icon>home</md-icon></button>
+  </form>
+  <md-list *ngIf="searchResults">
+    <md-list-item *ngFor="let person of searchResults; let i = index">
+      <md-icon md-list-avatar>account_circle</md-icon>
+      <h4 md-line><a routerLink="/edit/{{person.id}}" routerLinkActive="active">{{ person.name }}</a> ({{person.phone}})</h4>
+      <p md-line>{{person.address.street}}</p>
+      <p md-line>{{person.address.city}}, {{person.address.state}} {{person.address.zip}}</p>
+    </md-list-item>
+  </md-list>
+</md-grid-list>
