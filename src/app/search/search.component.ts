@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit }      from '@angular/core';
+
+import { Person, SearchService }  from '../_services/search.service';
 
 @Component({
   selector: 'app-search',
