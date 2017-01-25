@@ -24,4 +24,14 @@ export class SearchComponent implements OnInit {
       error => console.error(error)
     )
   }
+
+  showAll(): void {
+    this.searchService.getAll().then(
+      data => {
+        this.searchResults = data;
+        this.query = null;
+      },
+      error => console.error(error)
+    )
+  }
 }

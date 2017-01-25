@@ -2,6 +2,7 @@
 <form>
   <input type="search" name="query" [(ngModel)]="query" (keyup.enter)="search()">
   <button type="button" (click)="search()">Search</button>
+  <button type="button" (click)="showAll()">Show all</button>
 </form>
 <table *ngIf="searchResults">
   <thead>
