@@ -12,7 +12,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let person of searchResults; let i = index">
-      <td>{{ person.name }}</td>
+      <td><a routerLink="/edit/{{person.id}}" routerLinkActive="active">{{ person.name }}</a></td>
       <td>{{ person.phone }}</td>
       <td>
         {{ person.address.street }}<br />
