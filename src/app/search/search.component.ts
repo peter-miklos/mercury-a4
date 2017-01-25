@@ -8,13 +8,20 @@ import { Person, SearchService }  from '../_services/search.service';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
+  query: string;
+  searchResults: Array<Person>;
 
-  constructor() { }
+  constructor(
+    private searchService: SearchService
+  ) { }
 
   ngOnInit() {
   }
 
   search(): void {
-
+    this.searchService.getAll().then(
+      data => { this.searchResults = data; },
+      error => console.error(error)
+    )
   }
 }
