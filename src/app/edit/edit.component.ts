@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Params }   from '@angular/router';
+import 'rxjs/add/operator/switchMap';
+
+import { SearchService }            from '../_services/search.service';
 
 @Component({
   selector: 'app-edit',
@@ -7,9 +11,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditComponent implements OnInit {
 
-  constructor() { }
+  person: any = {};
+
+  constructor(
+    private searchService: SearchService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+    this.route.params
+        .switchMap((params: Params) => this.searchService.getPerson(+params['id']))
+        .subscribe(person => this.person = person)
   }
 
 }

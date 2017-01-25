@@ -16,6 +16,12 @@ export class SearchService {
                .catch(this.handleError)
   }
 
+  getPerson(id: number) {
+    return this.getAll().then(data => {
+      return data.find(p => p.id === id)
+    });
+  }
+
   search(q: string) {
     if(!q || q === "*") {
       q = '';
