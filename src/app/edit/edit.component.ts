@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Params }   from '@angular/router';
+import { Component, Input, OnInit }       from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 
 import { SearchService }            from '../_services/search.service';
@@ -11,17 +11,34 @@ import { SearchService }            from '../_services/search.service';
 })
 export class EditComponent implements OnInit {
 
-  person: any = {};
+  private person: any = {};
+  private address: any = {};
+  private loading = false;
 
   constructor(
     private searchService: SearchService,
-    private route: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.route.params
+    this.activatedRoute.params
         .switchMap((params: Params) => this.searchService.getPerson(+params['id']))
-        .subscribe(person => this.person = person)
+        .subscribe(person => {
+          this.person = person;
+          this.address = person.address;
+        })
+  }
+
+  save(): void {
+    this.loading = true;
+    this.person.address = this.address;
+    this.searchService.save(this.person);
+    this.gotoSearch();
+  }
+
+  gotoSearch(): void {
+    this.router.navigate(['/search'])
   }
 
 }
