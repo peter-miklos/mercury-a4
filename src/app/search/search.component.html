@@ -1,23 +1,25 @@
-<h2>Search</h2>
-<form>
-  <input type="search" name="query" [(ngModel)]="query" (keyup.enter)="search()">
-  <button type="button" (click)="search()">Search</button>
-  <button type="button" (click)="showAll()">Show all</button>
-</form>
-<table *ngIf="searchResults">
-  <thead>
-    <th>Name</th>
-    <th>Phone</th>
-    <th>Address</th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let person of searchResults; let i = index">
-      <td><a routerLink="/edit/{{person.id}}" routerLinkActive="active">{{ person.name }}</a></td>
-      <td>{{ person.phone }}</td>
-      <td>
-        {{ person.address.street }}<br />
-        {{ person.address.city }}, {{ person.address.state }} {{ person.address.zip }}
-      </td>
-    </tr>
-  </tbody>
-</table>
+<md-grid-list cols="1">
+  <h2>Search</h2>
+  <form>
+    <input type="search" name="query" [(ngModel)]="query" (keyup.enter)="search()">
+    <button type="button" (click)="search()">Search</button>
+    <button type="button" (click)="showAll()">Show all</button>
+  </form>
+  <table *ngIf="searchResults">
+    <thead>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Address</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let person of searchResults; let i = index">
+        <td><a routerLink="/edit/{{person.id}}" routerLinkActive="active">{{ person.name }}</a></td>
+        <td>{{ person.phone }}</td>
+        <td>
+          {{ person.address.street }}<br />
+          {{ person.address.city }}, {{ person.address.state }} {{ person.address.zip }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</md-grid-list>
