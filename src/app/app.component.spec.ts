@@ -30,16 +30,23 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   }));
 
-  xit(`should have as title 'app works!'`, async(() => {
+  it(`should have as title 'mercury-a4'`, async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app works!');
+    expect(app.title).toEqual('mercury-a4');
   }));
 
-  xit('should render title in a h1 tag', async(() => {
+  it('should render title in a h1 tag', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('app works!');
+    expect(compiled.querySelector('md-toolbar').textContent).toContain('mercury-a4');
+  }));
+
+  it('should render search icon in toolbar', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('md-icon#search').innerText).toBe('search');
   }));
 });
