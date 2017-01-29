@@ -8,7 +8,7 @@ export class SearchService {
   constructor(private http: Http) { }
 
   getAll(): Promise<any> {
-    return this.http.get('app/shared/search/data/people.json')
+    return this.http.get('http://localhost:4200/app/shared/search/data/people.json')
                .toPromise()
                .then((res: Response) => {
                  return this.addPersonsToSession(res.json());
