@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, ComponentFixtureAutoDetect, TestBed, async } from '@angular/core/testing';
 import { MaterialModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -16,14 +16,13 @@ describe('AppComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
+      declarations: [ AppComponent ],
       imports: [
-        MaterialModule.forRoot(),
-        FormsModule,
-        HttpModule,
-        RouterTestingModule
+        MaterialModule.forRoot(), FormsModule,
+        HttpModule, RouterTestingModule
+      ],
+      providers: [
+        { provide: ComponentFixtureAutoDetect, useValue: true }
       ]
     });
     TestBed.compileComponents();
@@ -41,12 +40,10 @@ describe('AppComponent', () => {
   }));
 
   it('should render title in a h1 tag', async(() => {
-    fixture.detectChanges();
     expect(compiled.querySelector('md-toolbar').textContent).toContain('mercury-a4');
   }));
 
   it('should render search icon in toolbar', async(() => {
-    fixture.detectChanges();
     expect(compiled.querySelector('md-icon#search').innerText).toBe('search');
   }));
 });
