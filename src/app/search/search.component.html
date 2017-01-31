@@ -2,7 +2,7 @@
   <h2>Search</h2>
   <form>
     <md-input-container>
-      <input md-input type="search" name="query" [(ngModel)]="query" (keyup.enter)="search()" />
+      <input md-input type="search" name="query" id="query" [(ngModel)]="query" (keyup.enter)="search()" />
     </md-input-container>
     <button id="search" md-mini-fab color="primary" type="button" (click)="search()"><md-icon>search</md-icon></button>
     <button id="show-all" md-mini-fab color="primary" type="button" (click)="showAll()"><md-icon>home</md-icon></button>
@@ -15,4 +15,7 @@
       <p md-line id="ad-city-state-zip-{{person.id}}">{{person.address.city}}, {{person.address.state}} {{person.address.zip}}</p>
     </md-list-item>
   </md-list>
+  <div *ngIf="searchResults && searchResults.length === 0" id="no-result">
+    No results found
+  </div>
 </md-grid-list>
