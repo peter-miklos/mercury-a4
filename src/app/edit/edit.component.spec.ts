@@ -16,8 +16,20 @@ describe('EditComponent', () => {
   let searchService: SearchService;
   let saveButton: HTMLElement;
   let backButton: HTMLElement;
+  let person: {}
 
   beforeEach(async(() => {
+    person: {
+      "id": 1,
+      "name": "Bob Smith",
+      "phone": "843-555-1234",
+      "address": {
+        "street": "123 North Kings Highway",
+        "city": "Myrtle Beach",
+        "state": "SC",
+        "zip": "29577"
+      }
+    };
     TestBed.configureTestingModule({
       declarations: [ EditComponent ],
       imports: [
@@ -42,6 +54,12 @@ describe('EditComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('calls the searchService.getPerson method on init', () => {
+    spyOn(searchService, 'getPerson').and.returnValue(Promise.resolve(undefined));
+    component.ngOnInit();
+    expect(searchService.getPerson).toHaveBeenCalled();
+  })
+
   it('informs user if no person was found, undefined is returned by searchService', fakeAsync(() => {
     spyOn(searchService, 'getPerson').and.returnValue(Promise.resolve(undefined));
     component.ngOnInit();
@@ -51,4 +69,13 @@ describe('EditComponent', () => {
       expect(fixture.debugElement.nativeElement.querySelector('div#no-person-found').innerText).toBe("No person found.");
     })
   }))
+
+  it("shows 'Submitting...' if the returning data by getPerson is in progress", () => {
+    spyOn(searchService, 'getPerson').and.returnValue(Promise.resolve(undefined));
+    component.loading = true;
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.nativeElement.querySelector('div#loading').innerText).toBe("Submitting...");
+  })
+
 });

@@ -29,6 +29,6 @@
   <button md-raised-button color="primary" *ngIf="person && !loading" type="button" name="save" (click)="save()">Save</button>
   <button md-raised-button color="primary" type="button" name="backToSearch" *ngIf="!loading" (click)="gotoSearch()">Back to Search</button>
 </div>
-<div *ngIf="loading">
+<div *ngIf="loading" id="loading">
   Submitting...
 </div>
