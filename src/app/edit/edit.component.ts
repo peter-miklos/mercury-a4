@@ -26,7 +26,7 @@ export class EditComponent implements OnInit {
         .switchMap((params: Params) => this.searchService.getPerson(+params['id']))
         .subscribe(person => {
           this.person = person;
-          this.address = person.address;
+          if (this.person) { this.address = person.address; }
         })
   }
 

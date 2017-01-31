@@ -22,7 +22,7 @@
     <input md-input type="text" name="zip" id="zip" [(ngModel)]="address.zip" placeholder="Zip" />
   </md-input-container>
 </div>
-<div *ngIf="!person">
+<div *ngIf="!person" id="no-person-found">
   No person found.
 </div>
 <div>
