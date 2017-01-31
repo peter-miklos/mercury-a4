@@ -15,7 +15,6 @@ describe('SearchComponent', () => {
   let fixture: ComponentFixture<SearchComponent>;
   let searchService: SearchService;
   let searchServiceStub: {};
-  let testPersons: {};
   let searchButton: HTMLElement;
   let showAllButton: HTMLElement;
   let queryField: HTMLElement;
@@ -66,12 +65,7 @@ describe('SearchComponent', () => {
     searchService = fixture.debugElement.injector.get(SearchService);
     searchButton = fixture.debugElement.nativeElement.querySelector('button#search');
     showAllButton = fixture.debugElement.nativeElement.querySelector('button#show-all');
-    // queryField = fixture.debugElement.nativeElement.querySelector('input#query');
     queryField = fixture.debugElement.query(By.css('input#query')).nativeElement;
-
-    // spyOn(searchService, 'getAll')
-    //   .and.returnValue(Promise.resolve(searchServiceStub['getAll']));
-
     fixture.detectChanges();
   });
 
