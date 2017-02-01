@@ -13,46 +13,44 @@ import { SearchService } from '../_services/search.service';
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
+  let de: DebugElement;
+  let el: HTMLElement;
   let searchService: SearchService;
-  let searchServiceStub: {};
+  let persons: [];
   let searchButton: HTMLElement;
   let showAllButton: HTMLElement;
   let queryField: HTMLElement;
 
   beforeEach(async(() => {
-    searchServiceStub = {
-      getAll: [
-        {
-          "id": 1,
-          "name": "Bob Smith",
-          "phone": "843-555-1234",
-          "address": {
-            "street": "123 North Kings Highway",
-            "city": "Myrtle Beach",
-            "state": "SC",
-            "zip": "29577"
-          }
-        },
-        {
-          "id": 2,
-          "name": "Jim Smith",
-          "phone": "843-555-2345",
-          "address": {
-            "street": "321 North Kings Highway",
-            "city": "Myrtle Beach",
-            "state": "SC",
-            "zip": "29577"
-          }
+    persons = [
+      {
+        "id": 1,
+        "name": "Bob Smith",
+        "phone": "843-555-1234",
+        "address": {
+          "street": "123 North Kings Highway",
+          "city": "Myrtle Beach",
+          "state": "SC",
+          "zip": "29577"
         }
-      ]
-    }
+      },
+      {
+        "id": 2,
+        "name": "Jim Smith",
+        "phone": "843-555-2345",
+        "address": {
+          "street": "321 North Kings Highway",
+          "city": "Myrtle Beach",
+          "state": "SC",
+          "zip": "29577"
+        }
+      }
+    ];
     TestBed.configureTestingModule({
       declarations: [ SearchComponent ],
       imports: [
-        MaterialModule.forRoot(),
-        FormsModule,
-        HttpModule,
-        RouterTestingModule
+        MaterialModule.forRoot(), FormsModule,
+        HttpModule, RouterTestingModule
       ],
       providers: [ SearchService ]
     })
@@ -62,11 +60,12 @@ describe('SearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
-    searchService = fixture.debugElement.injector.get(SearchService);
-    searchButton = fixture.debugElement.nativeElement.querySelector('button#search');
-    showAllButton = fixture.debugElement.nativeElement.querySelector('button#show-all');
-    queryField = fixture.debugElement.query(By.css('input#query')).nativeElement;
-    fixture.detectChanges();
+    de = fixture.debugElement;
+    el = de.nativeElement;
+    searchService = de.injector.get(SearchService);
+    searchButton = el.querySelector('button#search');
+    showAllButton = el.querySelector('button#show-all');
+    queryField = de.query(By.css('input#query')).nativeElement;
   });
 
   it('should create', () => {
@@ -85,19 +84,19 @@ describe('SearchComponent', () => {
 
   it('shows persons after getAll promise (async)', async(() => {
     spyOn(searchService, 'getAll')
-      .and.returnValue(Promise.resolve(searchServiceStub['getAll']));
+      .and.returnValue(Promise.resolve(persons));
     showAllButton.click();
 
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(fixture.debugElement.nativeElement.querySelector('a#name-1').innerText).toBe("Bob Smith");
-      expect(fixture.debugElement.nativeElement.querySelector('h4#name-phone-1').textContent).toContain("843-555-1234");
-      expect(fixture.debugElement.nativeElement.querySelector('p#ad-street-1').innerText).toBe("123 North Kings Highway");
-      expect(fixture.debugElement.nativeElement.querySelector('p#ad-city-state-zip-1').innerText).toBe("Myrtle Beach, SC 29577");
-      expect(fixture.debugElement.nativeElement.querySelector('a#name-2').innerText).toBe("Jim Smith");
-      expect(fixture.debugElement.nativeElement.querySelector('h4#name-phone-2').textContent).toContain("843-555-2345");
-      expect(fixture.debugElement.nativeElement.querySelector('p#ad-street-2').innerText).toBe("321 North Kings Highway");
-      expect(fixture.debugElement.nativeElement.querySelector('p#ad-city-state-zip-2').innerText).toBe("Myrtle Beach, SC 29577");
+      expect(el.querySelector('a#name-1').innerText).toBe("Bob Smith");
+      expect(el.querySelector('h4#name-phone-1').textContent).toContain("843-555-1234");
+      expect(el.querySelector('p#ad-street-1').innerText).toBe("123 North Kings Highway");
+      expect(el.querySelector('p#ad-city-state-zip-1').innerText).toBe("Myrtle Beach, SC 29577");
+      expect(el.querySelector('a#name-2').innerText).toBe("Jim Smith");
+      expect(el.querySelector('h4#name-phone-2').textContent).toContain("843-555-2345");
+      expect(el.querySelector('p#ad-street-2').innerText).toBe("321 North Kings Highway");
+      expect(el.querySelector('p#ad-city-state-zip-2').innerText).toBe("Myrtle Beach, SC 29577");
     });
   }));
 
@@ -128,7 +127,7 @@ describe('SearchComponent', () => {
 
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(fixture.debugElement.nativeElement.querySelector('div#no-result').innerText).toBe("No results found");
+      expect(el.querySelector('div#no-result').innerText).toBe("No results found");
     })
   }))
 
