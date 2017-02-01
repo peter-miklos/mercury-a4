@@ -13,6 +13,8 @@ import { SearchService } from '../_services/search.service';
 describe('EditComponent', () => {
   let component: EditComponent;
   let fixture: ComponentFixture<EditComponent>;
+  let de: DebugElement;
+  let el: HTMLElement;
   let searchService: SearchService;
   let saveButton: HTMLElement;
   let backButton: HTMLElement;
@@ -43,10 +45,12 @@ describe('EditComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditComponent);
-    searchService = fixture.debugElement.injector.get(SearchService);
+    de = fixture.debugElement;
+    el = de.nativeElement;
+    searchService = de.injector.get(SearchService);
     component = fixture.componentInstance;
-    saveButton = fixture.debugElement.nativeElement.querySelector('button#save');
-    backButton = fixture.debugElement.nativeElement.querySelector('button#backToSearch');
+    saveButton = el.querySelector('button#save');
+    backButton = el.querySelector('button#backToSearch');
   });
 
   it('should create', () => {
@@ -66,7 +70,7 @@ describe('EditComponent', () => {
 
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(fixture.debugElement.nativeElement.querySelector('div#no-person-found').innerText).toBe("No person found.");
+      expect(el.querySelector('div#no-person-found').innerText).toBe("No person found.");
     })
   }))
 
@@ -75,7 +79,7 @@ describe('EditComponent', () => {
     component.loading = true;
     fixture.detectChanges();
 
-    expect(fixture.debugElement.nativeElement.querySelector('div#loading').innerText).toBe("Submitting...");
+    expect(el.querySelector('div#loading').innerText).toBe("Submitting...");
   })
 
 });
