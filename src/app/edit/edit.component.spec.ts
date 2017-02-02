@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { MaterialModule } from '@angular/material';
@@ -18,10 +18,10 @@ describe('EditComponent', () => {
   let searchService: SearchService;
   let saveButton: HTMLElement;
   let backButton: HTMLElement;
-  let person: {}
+  let person: {};
 
   beforeEach(async(() => {
-    person: {
+    person = {
       "id": 1,
       "name": "Bob Smith",
       "phone": "843-555-1234",
@@ -45,10 +45,10 @@ describe('EditComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditComponent);
+    component = fixture.componentInstance;
     de = fixture.debugElement;
     el = de.nativeElement;
     searchService = de.injector.get(SearchService);
-    component = fixture.componentInstance;
     saveButton = el.querySelector('button#save');
     backButton = el.querySelector('button#backToSearch');
   });
@@ -72,7 +72,34 @@ describe('EditComponent', () => {
       fixture.detectChanges();
       expect(el.querySelector('div#no-person-found').innerText).toBe("No person found.");
     })
+  }));
+
+  it("show the person's details received from the searchService", async(() => {
+    spyOn(searchService, 'getPerson').and.returnValue(Promise.resolve(person));
+    component.ngOnInit();
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(el.querySelector('input#name').getAttribute('ng-reflect-model')).toBe(person["name"]);
+      expect(el.querySelector('input#phone').getAttribute('ng-reflect-model')).toBe(person["phone"]);
+      expect(el.querySelector('input#street').getAttribute('ng-reflect-model')).toBe(person["address"]["street"]);
+      expect(el.querySelector('input#city').getAttribute('ng-reflect-model')).toBe(person["address"]["city"]);
+      expect(el.querySelector('input#state').getAttribute('ng-reflect-model')).toBe(person["address"]["state"]);
+      expect(el.querySelector('input#zip').getAttribute('ng-reflect-model')).toBe(person["address"]["zip"]);
+    })
   }))
+
+  xit('calls the searchService.save function with person data if save button clicked', () => {
+
+  });
+
+  xit("sets loading var to true when save button clicked", () => {
+
+  });
+
+  xit("navigates to search screen after person data saved", () => {
+
+  })
 
   it("shows 'Submitting...' if the returning data by getPerson is in progress", () => {
     spyOn(searchService, 'getPerson').and.returnValue(Promise.resolve(undefined));
@@ -80,6 +107,10 @@ describe('EditComponent', () => {
     fixture.detectChanges();
 
     expect(el.querySelector('div#loading').innerText).toBe("Submitting...");
+  })
+
+  xit("navigates to search view if 'Back to Search' button clicked", () => {
+
   })
 
 });

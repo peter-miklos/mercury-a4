@@ -1,10 +1,10 @@
 <div class="" *ngIf="person && !loading">
   <h3>{{person.name}} (id: {{person.id}})</h3>
   <md-input-container>
-    <input md-input type="text" name="name" [(ngModel)]="person.name" placeholder="Name" />
+    <input md-input type="text" name="name" id="name" [(ngModel)]="person.name" placeholder="Name" />
   </md-input-container>
   <md-input-container>
-    <input md-input type="text" name="phone" [(ngModel)]="person.phone" placeholder="Phone" />
+    <input md-input type="text" name="phone" id="phone" [(ngModel)]="person.phone" placeholder="Phone" />
   </md-input-container>
   <div>
     <strong>Address:</strong>
