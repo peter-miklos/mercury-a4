@@ -26,8 +26,8 @@
   No person found.
 </div>
 <div>
-  <button md-raised-button color="primary" *ngIf="person && !loading" type="button" name="save" (click)="save()">Save</button>
-  <button md-raised-button color="primary" type="button" name="backToSearch" *ngIf="!loading" (click)="gotoSearch()">Back to Search</button>
+  <button md-raised-button color="primary" id="save-person" *ngIf="person && !loading" type="button" name="save-person" (click)="save()">Save</button>
+  <button md-raised-button color="primary" type="button" name="back-to-search" id="back-to-search" *ngIf="!loading" (click)="gotoSearch()">Back to Search</button>
 </div>
 <div *ngIf="loading" id="loading">
   Submitting...

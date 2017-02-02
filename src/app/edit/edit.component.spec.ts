@@ -5,6 +5,7 @@ import { DebugElement } from '@angular/core';
 import { MaterialModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { Router }     from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { EditComponent } from './edit.component';
@@ -16,9 +17,11 @@ describe('EditComponent', () => {
   let de: DebugElement;
   let el: HTMLElement;
   let searchService: SearchService;
-  let saveButton: HTMLElement;
+  let router: Router;
+  // let saveButton: HTMLElement;
   let backButton: HTMLElement;
   let person: {};
+  let newPerson: {};
 
   beforeEach(async(() => {
     person = {
@@ -30,6 +33,17 @@ describe('EditComponent', () => {
         "city": "Myrtle Beach",
         "state": "SC",
         "zip": "29577"
+      }
+    };
+    newPerson = {
+      "id": 1,
+      "name": "Jim Smith",
+      "phone": "843-555-4321",
+      "address": {
+        "street": "321 London Road",
+        "city": "Bath",
+        "state": "NJ",
+        "zip": "55555"
       }
     };
     TestBed.configureTestingModule({
@@ -49,8 +63,9 @@ describe('EditComponent', () => {
     de = fixture.debugElement;
     el = de.nativeElement;
     searchService = de.injector.get(SearchService);
-    saveButton = el.querySelector('button#save');
-    backButton = el.querySelector('button#backToSearch');
+    router = de.injector.get(Router);
+    // saveButton = el.querySelector('button#save-person');
+    backButton = el.querySelector('button#back-to-search');
   });
 
   it('should create', () => {
@@ -89,16 +104,57 @@ describe('EditComponent', () => {
     })
   }))
 
-  xit('calls the searchService.save function with person data if save button clicked', () => {
+  it("calls the searchService.save with the updated data if save button clicked", async(() => {
+    spyOn(searchService, 'getPerson').and.returnValue(Promise.resolve(person));
+    spyOn(searchService, 'save');
+    spyOn(component, 'gotoSearch');
+    component.ngOnInit();
+    fixture.detectChanges();
 
-  });
+    fixture.whenStable().then(() => {
+      el.querySelector('input#name').value = newPerson["name"];
+      el.querySelector('input#name').dispatchEvent(new Event('input'));
+      el.querySelector('input#phone').value = newPerson["phone"];
+      el.querySelector('input#phone').dispatchEvent(new Event('input'));
+      el.querySelector('input#street').value = newPerson["address"]["street"];
+      el.querySelector('input#street').dispatchEvent(new Event('input'));
+      el.querySelector('input#city').value = newPerson["address"]["city"];
+      el.querySelector('input#city').dispatchEvent(new Event('input'));
+      el.querySelector('input#state').value = newPerson["address"]["state"];
+      el.querySelector('input#state').dispatchEvent(new Event('input'));
+      el.querySelector('input#zip').value = newPerson["address"]["zip"];
+      el.querySelector('input#zip').dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      el.querySelector('button#save-person').click();
+      fixture.detectChanges();
+      expect(searchService.save).toHaveBeenCalledWith(newPerson);
+    })
+  }))
 
-  xit("sets loading var to true when save button clicked", () => {
+  it("sets loading var to true when save button clicked", async(() => {
+    spyOn(searchService, 'getPerson').and.returnValue(Promise.resolve(person));
+    spyOn(searchService, 'save');
+    spyOn(component, 'gotoSearch');
+    component.ngOnInit();
 
-  });
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      el.querySelector('button#save-person').click();
+      expect(component.loading).toBe(true);
+    })
+  }));
 
-  xit("navigates to search screen after person data saved", () => {
+  it("gotoSearch function is called after saving person data", () => {
+    spyOn(searchService, 'getPerson').and.returnValue(Promise.resolve(person));
+    spyOn(searchService, 'save');
+    spyOn(component, 'gotoSearch');
+    component.ngOnInit();
 
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      el.querySelector('button#save-person').click();
+      expect(component.gotoSearch).toHaveBeenCalled();
+    })
   })
 
   it("shows 'Submitting...' if the returning data by getPerson is in progress", () => {
@@ -109,8 +165,13 @@ describe('EditComponent', () => {
     expect(el.querySelector('div#loading').innerText).toBe("Submitting...");
   })
 
-  xit("navigates to search view if 'Back to Search' button clicked", () => {
+  it("navigates to search view if 'Back to Search' button clicked", () => {
+    spyOn(searchService, 'getPerson').and.returnValue(Promise.resolve(person));
+    spyOn(router, 'navigate');
+    fixture.detectChanges();
+    el.querySelector('button#back-to-search').click();
 
+    expect(router.navigate).toHaveBeenCalledWith(['/search']);
   })
 
 });
