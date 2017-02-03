@@ -112,9 +112,10 @@ describe('EditComponent', () => {
       component.ngOnInit();
     });
 
-    it("show the person's details received from the searchService", async(() => {
+    it("shows the person's details received from the searchService", async(() => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
+        expect(el.querySelector('h3').innerText).toBe(`${person["name"]} (id: ${person["id"]})`);
         expect(el.querySelector('input#name').getAttribute('ng-reflect-model')).toBe(person["name"]);
         expect(el.querySelector('input#phone').getAttribute('ng-reflect-model')).toBe(person["phone"]);
         expect(el.querySelector('input#street').getAttribute('ng-reflect-model')).toBe(person["address"]["street"]);
