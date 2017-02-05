@@ -7,7 +7,6 @@ describe('Address', () => {
   describe('instance created with full deatils', () => {
     beforeEach(() => {
       address = new Address({'street': "123 North Kings Drive", 'city': 'Myrtle Beach', 'state': 'SC', 'zip': '29577' });
-      emptyAddress = new Address();
     });
 
     it('has street', () => {
