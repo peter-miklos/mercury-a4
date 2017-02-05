@@ -1,6 +1,7 @@
 import { Component, OnInit }      from '@angular/core';
 
-import { Person, SearchService }  from '../_services/search.service';
+import { SearchService }  from '../_services/search.service';
+import { Person }         from '../_models/person.model';
 
 @Component({
   selector: 'app-search',
@@ -9,7 +10,7 @@ import { Person, SearchService }  from '../_services/search.service';
 })
 export class SearchComponent implements OnInit {
   query: string;
-  searchResults: Array<Person>;
+  searchResults: Person[];
 
   constructor(
     private searchService: SearchService

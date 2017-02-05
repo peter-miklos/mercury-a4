@@ -3,6 +3,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 
 import { SearchService }            from '../_services/search.service';
+import { Person }                   from '../_models/person.model';
+import { Address }                  from '../_models/address.model';
 
 @Component({
   selector: 'app-edit',
@@ -11,8 +13,8 @@ import { SearchService }            from '../_services/search.service';
 })
 export class EditComponent implements OnInit {
 
-  private person: any = {};
-  private address: any = {};
+  private person: Person;
+  private address: Address;
   private loading = false;
 
   constructor(
