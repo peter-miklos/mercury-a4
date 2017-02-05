@@ -1,10 +1,10 @@
 <div class="" *ngIf="person && !loading">
   <h3>{{person.name}} (id: {{person.id}})</h3>
   <md-input-container>
-    <input md-input type="text" name="name" [(ngModel)]="person.name" placeholder="Name" />
+    <input md-input type="text" name="name" id="name" [(ngModel)]="person.name" placeholder="Name" />
   </md-input-container>
   <md-input-container>
-    <input md-input type="text" name="phone" [(ngModel)]="person.phone" placeholder="Phone" />
+    <input md-input type="text" name="phone" id="phone" [(ngModel)]="person.phone" placeholder="Phone" />
   </md-input-container>
   <div>
     <strong>Address:</strong>
@@ -22,13 +22,13 @@
     <input md-input type="text" name="zip" id="zip" [(ngModel)]="address.zip" placeholder="Zip" />
   </md-input-container>
 </div>
-<div *ngIf="!person">
+<div *ngIf="!person" id="no-person-found">
   No person found.
 </div>
 <div>
-  <button md-raised-button color="primary" *ngIf="person && !loading" type="button" name="save" (click)="save()">Save</button>
-  <button md-raised-button color="primary" type="button" name="backToSearch" *ngIf="!loading" (click)="gotoSearch()">Back to Search</button>
+  <button md-raised-button color="primary" id="save-person" *ngIf="person && !loading" type="button" name="save-person" (click)="save()">Save</button>
+  <button md-raised-button color="primary" type="button" name="back-to-search" id="back-to-search" *ngIf="!loading" (click)="gotoSearch()">Back to Search</button>
 </div>
-<div *ngIf="loading">
+<div *ngIf="loading" id="loading">
   Submitting...
 </div>
