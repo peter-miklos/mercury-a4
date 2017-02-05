@@ -61,31 +61,3 @@ export class SearchService {
     return Promise.reject(error.message || error);
   }
 }
-
-export class Person {
-  id: number;
-  name: string;
-  phone: string;
-  address: Address;
-
-  constructor(obj?: any) {
-    this.id = obj && Number(obj.id) || null;
-    this.name = obj && obj.name || '';
-    this.phone = obj && obj.phone || '';
-    this.address = obj && obj.address || '';
-  }
-}
-
-export class Address {
-  street: string;
-  city: string;
-  state: string;
-  zip: string;
-
-  constructor(obj?: any) {
-    this.street = obj && obj.street || '';
-    this.city = obj && obj.city || '';
-    this.state = obj && obj.state || '';
-    this.zip = obj && obj.zip || '';
-  }
-}
