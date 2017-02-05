@@ -7,6 +7,7 @@ import { SearchService } from './search.service';
 describe('SearchService', () => {
   let service: SearchService;
   let persons: [];
+  let newPerson: {};
 
   beforeEach(() => {
     persons = [
@@ -33,6 +34,17 @@ describe('SearchService', () => {
         }
       }
     ];
+    newPerson = newPerson = {
+      "id": 2,
+      "name": "Jim Smith",
+      "phone": "843-555-4321",
+      "address": {
+        "street": "321 London Road",
+        "city": "Bath",
+        "state": "NJ",
+        "zip": "55555"
+      }
+    };
     TestBed.configureTestingModule({
       providers: [SearchService],
       imports: [HttpModule]
@@ -139,5 +151,18 @@ describe('SearchService', () => {
 
   describe('#save', () => {
 
-  })
+    beforeEach(() => {
+      spyOn(service, 'getAll').and.returnValue(Promise.resolve(persons));
+    });
+
+    it('saves updated data in sessionStorage', done => {
+      service.addPersonsToSession(persons);
+      service.save(newPerson);
+      const storedPersons = JSON.parse(sessionStorage.getItem('persons'));
+      expect(storedPersons.length).toBe(2);
+      expect(storedPersons).toContain(newPerson);
+      expect(storedPersons).toContain(persons[0]);
+      done();
+    });
+  });
 });
