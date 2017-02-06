@@ -1,14 +1,22 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
-import { HttpModule } from '@angular/http';
-import { SearchService } from './search.service';
-import { Observable }     from 'rxjs/Observable';
+import { TestBed, async, inject }       from '@angular/core/testing';
+import { HttpModule, Http, XHRBackend } from '@angular/http';
+import { Response, ResponseOptions }    from '@angular/http';
+import { MockBackend, MockConnection }  from '@angular/http/testing';
+import { Observable }                   from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/do';
+
+import { SearchService }                from './search.service';
 
 describe('SearchService', () => {
   let service: SearchService;
   let persons: [];
   let newPerson: {};
+  let backend: MockBackend;
+  let response: Response;
 
   beforeEach(() => {
     persons = [
@@ -47,32 +55,43 @@ describe('SearchService', () => {
       }
     };
     TestBed.configureTestingModule({
-      providers: [SearchService],
-      imports: [HttpModule]
+      imports: [HttpModule],
+      providers: [
+        SearchService,
+        { provide: XHRBackend, useClass: MockBackend }
+      ]
     });
-    service = new SearchService();
   });
+
+  beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
+    backend = be;
+    service = new SearchService(http);
+    response = new Response(new ResponseOptions({status: 200, body: persons}));
+  }))
 
   it('should ...', inject([SearchService], (service: SearchService) => {
     expect(service).toBeTruthy();
   }));
 
-  // describe('#getAll', () => {
-  //   beforeEach(() => {
-  //     spyOn(httpModule, 'get').and.returnValue(Promise.resolve(persons));
-  //   })
-  //
-  //   it('trial', done => {
-  //     service.getAll().then(value => {
-  //       expect(value).toBe(persons);
-  //       done();
-  //     })
-  //   })
-  //
-  //   xit('calls http.get method with a link', done => {
-  //
-  //   })
-  // });
+  describe('#getAll', () => {
+
+    it('has the expected number of people', done => {
+      backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
+
+      service.getAll().subscribe(values => {
+        expect(values.length).toBe(persons.length);
+        done();
+      })
+    });
+
+    xit('handle the case if there is no person returned', done => {
+
+    })
+
+    xit('calls http.get method with a link', done => {
+
+    })
+  });
 
   describe('#getPerson', () => {
 
