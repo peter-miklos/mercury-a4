@@ -23,6 +23,16 @@ export class EditComponent implements OnInit {
     private router: Router
   ) { }
 
+  // ngOnInit() {
+  //   this.activatedRoute.params
+  //       .subscribe((p: Params) => {
+  //         this.searchService.getPerson(+p['id']).subscribe(person => {
+  //           this.person = person;
+  //           if (this.person) { this.address = person.address; }
+  //         })
+  //       })
+  // }
+
   ngOnInit() {
     this.activatedRoute.params
         .switchMap((params: Params) => this.searchService.getPerson(+params['id']))

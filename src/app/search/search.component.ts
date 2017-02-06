@@ -20,14 +20,14 @@ export class SearchComponent implements OnInit {
   }
 
   search(): void {
-    this.searchService.search(this.query).then(
+    this.searchService.search(this.query).subscribe(
       data => { this.searchResults = data; },
       error => console.error(error)
     )
   }
 
   showAll(): void {
-    this.searchService.getAll().then(
+    this.searchService.getAll().subscribe(
       data => {
         this.searchResults = data;
         this.query = null;
