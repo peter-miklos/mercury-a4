@@ -103,7 +103,7 @@ describe('SearchService', () => {
 
       service.getAll().toPromise()
         .catch(err => {
-          expect(err).toMatch(/Server error/);
+          expect(err).toMatch(/Error/);
         });
     })));
 
@@ -117,7 +117,6 @@ describe('SearchService', () => {
           expect(err).toMatch(/An error occured/);
         });
     })));
-
   });
 
   describe('#getPerson', () => {
