@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject }       from '@angular/core/testing';
+import { TestBed, async, inject, fakeAsync }       from '@angular/core/testing';
 import { HttpModule, Http, XHRBackend } from '@angular/http';
 import { Response, ResponseOptions }    from '@angular/http';
 import { MockBackend, MockConnection }  from '@angular/http/testing';
@@ -8,6 +8,7 @@ import { Observable }                   from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/toPromise';
 
 import { SearchService }                from './search.service';
 
@@ -17,8 +18,9 @@ describe('SearchService', () => {
   let newPerson: {};
   let backend: MockBackend;
   let response: Response;
+  let testNumber: number;
 
-  beforeEach(() => {
+  beforeEach( async(() => {
     persons = [
       {
         "id": 1,
@@ -61,13 +63,12 @@ describe('SearchService', () => {
         { provide: XHRBackend, useClass: MockBackend }
       ]
     });
-  });
+  }));
 
-  beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
-    backend = be;
+  beforeEach(async(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
     service = new SearchService(http);
-    response = new Response(new ResponseOptions({status: 200, body: persons}));
-  }))
+    backend = be;
+  })))
 
   it('should ...', inject([SearchService], (service: SearchService) => {
     expect(service).toBeTruthy();
@@ -75,22 +76,27 @@ describe('SearchService', () => {
 
   describe('#getAll', () => {
 
-    it('has the expected number of people', done => {
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-
-      service.getAll().subscribe(values => {
-        expect(values.length).toBe(persons.length);
-        done();
+    it('has the expected number of people', fakeAsync(inject([], () => {
+      response = new Response(new ResponseOptions({status: 200, body: persons}));
+      backend.connections.subscribe((c: MockConnection) => {
+        c.mockRespond(response);
       })
-    });
 
-    xit('handle the case if there is no person returned', done => {
+      service.getAll().toPromise()
+        .then(value => {
+          expect(value.length).toBe(persons.length);
+          backend.connections.unsubscribe();
+        });
+    })));
 
-    })
-
-    xit('calls http.get method with a link', done => {
-
-    })
+    it('calls http.get method with a link', fakeAsync(inject([XHRBackend], (backend: MockBackend) => {
+      response = new Response(new ResponseOptions({status: 200, body: []}));
+      backend.connections.subscribe((c: MockConnection) => {
+        expect(c.request.url).toBe('/app/shared/search/data/people.json');
+        c.mockRespond(response);
+      });
+      service.getAll();
+    })));
   });
 
   describe('#getPerson', () => {
@@ -124,11 +130,13 @@ describe('SearchService', () => {
   describe('#search', () => {
 
     beforeEach(() => {
-      spyOn(service, 'getAll').and.returnValue(Promise.resolve(persons));
+      spyOn(service, 'getAll').and.returnValue(Observable.create(observer => {
+        observer.next(persons);
+      }));
     });
 
-    xit('returns all persons if no value is used in search', done => {
-      service.search('').then(value => {
+    it('returns all persons if no value is used in search', done => {
+      service.search('').subscribe(value => {
         expect(value.length).toBe(2);
         expect(value[0]).toBe(persons[0]);
         expect(value[1]).toBe(persons[1]);
@@ -136,8 +144,8 @@ describe('SearchService', () => {
       })
     })
 
-    xit('returns all persons if a * is used in search', done => {
-      service.search('*').then(value => {
+    it('returns all persons if a * is used in search', done => {
+      service.search('*').subscribe(value => {
         expect(value.length).toBe(2);
         expect(value[0]).toBe(persons[0]);
         expect(value[1]).toBe(persons[1]);
@@ -145,16 +153,16 @@ describe('SearchService', () => {
       })
     })
 
-    xit('finds and returns one person if first name is searched', done => {
-      service.search('jim').then(value => {
+    it('finds and returns one person if first name is searched', done => {
+      service.search('jim').subscribe(value => {
         expect(value.length).toBe(1);
         expect(value[0]).toBe(persons[1]);
         done();
       })
     })
 
-    xit('finds and returns both people if city is searched (same city included)', done => {
-      service.search('Myrtle Beach').then(value => {
+    it('finds and returns both people if city is searched (same city included)', done => {
+      service.search('Myrtle Beach').subscribe(value => {
         expect(value.length).toBe(2);
         expect(value[0]).toBe(persons[0]);
         expect(value[1]).toBe(persons[1]);
@@ -162,8 +170,8 @@ describe('SearchService', () => {
       })
     })
 
-    xit('is not case sensitive', done => {
-      service.search('bOb sMiT').then(value => {
+    it('is not case sensitive', done => {
+      service.search('bOb sMiT').subscribe(value => {
         expect(value.length).toBe(1);
         expect(value[0]).toBe(persons[0]);
         done();
@@ -174,7 +182,9 @@ describe('SearchService', () => {
   describe('#save', () => {
 
     beforeEach(() => {
-      spyOn(service, 'getAll').and.returnValue(Promise.resolve(persons));
+      spyOn(service, 'getAll').and.returnValue(Observable.create(observer => {
+        observer.next(persons);
+      }));
     });
 
     it('saves updated data in sessionStorage', done => {
