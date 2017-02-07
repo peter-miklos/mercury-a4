@@ -1,23 +1,27 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
-import 'rxjs/add/operator/toPromise';
+import { Observable }     from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
+
+import { Person }         from '../_models/person.model';
 
 @Injectable()
 export class SearchService {
 
   constructor(private http: Http) { }
 
-  getAll(): Promise<any> {
+  getAll(): Observable<Person[]> {
     return this.http.get('/app/shared/search/data/people.json')
-               .toPromise()
-               .then((res: Response) => {
+               .map((res: Response) => {
                  return this.addPersonsToSession(res.json());
                })
                .catch(this.handleError)
   }
 
   getPerson(id: number) {
-    return this.getAll().then(data => {
+    return this.getAll().map(data => {
       return data.find(p => p.id === id)
     });
   }
@@ -28,7 +32,7 @@ export class SearchService {
     } else {
       q = q.toLowerCase();
     }
-    return this.getAll().then(data => {
+    return this.getAll().map(data => {
       let results: any[] = [];
       data.map(item => {
         if (JSON.stringify(item).toLowerCase().includes(q)) {
@@ -56,8 +60,15 @@ export class SearchService {
     return JSON.parse(sessionStorage.getItem('persons'));
   }
 
-  private handleError(error: any): Promise<any> {
-    console.error("An error occured", error);
-    return Promise.reject(error.message || error);
+  private handleError(error: Response | any) {
+    let errMsg: string;
+    if (error instanceof Response) {
+      const err = error["_body"] || JSON.stringify(error);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
   }
 }

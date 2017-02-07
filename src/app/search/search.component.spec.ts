@@ -6,6 +6,7 @@ import { MaterialModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Observable }          from 'rxjs/Observable';
 
 import { SearchComponent } from './search.component';
 import { SearchService } from '../_services/search.service';
@@ -73,7 +74,7 @@ describe('SearchComponent', () => {
   });
 
   it('calls searchService.getAll() if button clicked', async(() => {
-    spyOn(searchService, 'getAll').and.returnValue(Promise.resolve([]));
+    spyOn(searchService, 'getAll').and.returnValue(Observable.create(o => o.next([])));
     showAllButton.click();
 
     fixture.whenStable().then(() => {
@@ -83,8 +84,7 @@ describe('SearchComponent', () => {
   }));
 
   it('shows persons after getAll promise (async)', async(() => {
-    spyOn(searchService, 'getAll')
-      .and.returnValue(Promise.resolve(persons));
+    spyOn(searchService, 'getAll').and.returnValue(Observable.create(o => o.next(persons)));
     showAllButton.click();
 
     fixture.whenStable().then(() => {
@@ -108,7 +108,7 @@ describe('SearchComponent', () => {
   }))
 
   it("calls the search method in search.services with query value", async(() => {
-    spyOn(searchService, 'search').and.returnValue(Promise.resolve([]));;
+    spyOn(searchService, 'search').and.returnValue(Observable.create(o => o.next([])));
     queryField.value = "Robert";
     queryField.dispatchEvent(new Event('input'));
     fixture.detectChanges();
@@ -119,7 +119,7 @@ describe('SearchComponent', () => {
   }))
 
   it("informs user if nothing is found, and empty array received from search.service", async(() => {
-    spyOn(searchService, 'search').and.returnValue(Promise.resolve([]));
+    spyOn(searchService, 'search').and.returnValue(Observable.create(o => o.next([])));
     queryField.value = "Robert";
     queryField.dispatchEvent(new Event('input'));
     fixture.detectChanges();
