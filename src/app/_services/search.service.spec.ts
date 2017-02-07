@@ -17,7 +17,6 @@ describe('SearchService', () => {
   let persons: [];
   let newPerson: {};
   let backend: MockBackend;
-  let response: Response;
   let testNumber: number;
 
   beforeEach( async(() => {
@@ -76,8 +75,17 @@ describe('SearchService', () => {
 
   describe('#getAll', () => {
 
+    it('calls http.get method with a link', fakeAsync(inject([XHRBackend], (backend: MockBackend) => {
+      let response = new Response(new ResponseOptions({status: 200, body: []}));
+      backend.connections.subscribe((c: MockConnection) => {
+        expect(c.request.url).toBe('/app/shared/search/data/people.json');
+        c.mockRespond(response);
+      });
+      service.getAll();
+    })));
+
     it('has the expected number of people', fakeAsync(inject([], () => {
-      response = new Response(new ResponseOptions({status: 200, body: persons}));
+      let response = new Response(new ResponseOptions({status: 200, body: persons}));
       backend.connections.subscribe((c: MockConnection) => {
         c.mockRespond(response);
       })
@@ -85,18 +93,31 @@ describe('SearchService', () => {
       service.getAll().toPromise()
         .then(value => {
           expect(value.length).toBe(persons.length);
-          backend.connections.unsubscribe();
         });
     })));
 
-    it('calls http.get method with a link', fakeAsync(inject([XHRBackend], (backend: MockBackend) => {
-      response = new Response(new ResponseOptions({status: 200, body: []}));
+    it('returns standard error message if error occured with no details', fakeAsync(inject([], () => {
       backend.connections.subscribe((c: MockConnection) => {
-        expect(c.request.url).toBe('/app/shared/search/data/people.json');
-        c.mockRespond(response);
+        c.mockError(new Error());
       });
-      service.getAll();
+
+      service.getAll().toPromise()
+        .catch(err => {
+          expect(err).toMatch(/Server error/);
+        });
     })));
+
+    it('returns the error message if error occured with details', fakeAsync(inject([], () => {
+      backend.connections.subscribe((c: MockConnection) => {
+        c.mockError(new Error('An error occured'));
+      });
+
+      service.getAll().toPromise()
+        .catch(err => {
+          expect(err).toMatch(/An error occured/);
+        });
+    })));
+
   });
 
   describe('#getPerson', () => {
