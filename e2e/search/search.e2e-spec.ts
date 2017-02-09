@@ -55,7 +55,7 @@ describe("Search feature", () => {
     element(by.css("button#search")).click();
 
     expect(allPersons.count()).toBe(1);
-    expect(page.getElemContent("name-phone-1")).toBeDefined();    
+    expect(page.getElemContent("name-phone-1")).toBeDefined();
   });
 
   it("informs user if search was not successfull", () => {
