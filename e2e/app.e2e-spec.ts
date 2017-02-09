@@ -22,9 +22,4 @@ describe('mercury-a4 App', () => {
     element(by.css("a")).click();
     expect(browser.getCurrentUrl()).toEqual("http://localhost:4200/search");
   })
-
-  xit('should display Search in the header', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Search');
-  });
 });
