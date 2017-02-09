@@ -19,11 +19,9 @@ describe("Search feature", () => {
     element(by.css("button#show-all")).click();
 
     expect(allPersons.count()).toBe(3);
-    expect(page.getElemContent("name-1")).toBe("Bob Smith");
-    expect(page.getElemContent("name-2")).toBe("Jim Smith");
-    expect(page.getElemContent("ad-street-2")).toBe("321 North Kings Highway");
-    expect(page.getElemContent("ad-city-state-zip-2")).toBe("Myrtle Beach, SC 29577");
-    expect(page.getElemContent("name-3")).toBe("Tom Smith");
+    expect(page.getElemContent("name-phone-1")).toBeDefined();
+    expect(page.getElemContent("name-phone-2")).toBeDefined();
+    expect(page.getElemContent("name-phone-3")).toBeDefined();
   })
 
   it("displays all persons if '*' is searched", () => {
@@ -31,11 +29,9 @@ describe("Search feature", () => {
     element(by.css("button#search")).click();
 
     expect(allPersons.count()).toBe(3);
-    expect(page.getElemContent("name-phone-1")).toBe("Bob Smith (843-555-1234)");
-    expect(page.getElemContent("ad-street-1")).toBe("123 North Kings Highway");
-    expect(page.getElemContent("ad-city-state-zip-1")).toBe("Myrtle Beach, SC 29577");
-    expect(page.getElemContent("ad-street-2")).toBe("321 North Kings Highway");
-    expect(page.getElemContent("ad-street-3")).toBe("222 North Kings Highway");
+    expect(page.getElemContent("name-phone-1")).toBeDefined();
+    expect(page.getElemContent("name-phone-2")).toBeDefined();
+    expect(page.getElemContent("name-phone-3")).toBeDefined();
   })
 
   it("displays all persons if no search term is added during search", () => {
@@ -43,11 +39,9 @@ describe("Search feature", () => {
     element(by.css("button#search")).click();
 
     expect(allPersons.count()).toBe(3);
-    expect(page.getElemContent("name-phone-1")).toBe("Bob Smith (843-555-1234)");
-    expect(page.getElemContent("name-phone-2")).toBe("Jim Smith (843-555-2345)");
-    expect(page.getElemContent("name-phone-3")).toBe("Tom Smith (843-555-3456)");
-    expect(page.getElemContent("ad-street-3")).toBe("222 North Kings Highway");
-    expect(page.getElemContent("ad-city-state-zip-3")).toBe("Myrtle Beach, SC 29577");
+    expect(page.getElemContent("name-phone-1")).toBeDefined();
+    expect(page.getElemContent("name-phone-2")).toBeDefined();
+    expect(page.getElemContent("name-phone-3")).toBeDefined();
   })
 
   it("finds the person if its data is searched", () => {
@@ -56,6 +50,8 @@ describe("Search feature", () => {
 
     expect(allPersons.count()).toBe(1);
     expect(page.getElemContent("name-phone-1")).toBeDefined();
+    expect(element(by.id("name-phone-2")).isPresent()).toBeFalsy();
+    expect(element(by.id("name-phone-3")).isPresent()).toBeFalsy();
   });
 
   it("informs user if search was not successfull", () => {
