@@ -10,11 +10,11 @@ describe('mercury-a4 App', () => {
   });
 
   it("displays the app title in the toolbar", () => {
-    expect(element(by.css("span#title")).getText()).toEqual("mercury-a4");
+    expect(page.getElemContent("title")).toBe("mercury-a4");
   });
 
   it("displays search md icon in the toolbar", () => {
-    expect(element(by.css("md-icon#search")).getText()).toEqual('search');
+    expect(page.getElemContent("search-icon")).toEqual("search");
   })
 
   it("navigates to search page if search icon is clicked", () => {

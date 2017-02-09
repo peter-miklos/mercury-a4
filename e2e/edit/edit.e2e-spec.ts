@@ -21,27 +21,27 @@ describe("Edit feature", () => {
   })
 
   it("shows the name of the person in an input field", () => {
-    expect(element(by.css("input#name")).getAttribute('ng-reflect-model')).toBe("Jim Smith");
+    expect(page.getNrmContent("input#name")).toBe("Jim Smith");
   })
 
   it("shows the phone number of the person in an input field", () => {
-    expect(element(by.css("input#phone")).getAttribute('ng-reflect-model')).toBe("843-555-2345");
+    expect(page.getNrmContent("input#phone")).toBe("843-555-2345");
   })
 
   it("shows the street info of the person's address in an input field", () => {
-    expect(element(by.css("input#street")).getAttribute('ng-reflect-model')).toBe("321 North Kings Highway");
+    expect(page.getNrmContent("input#street")).toBe("321 North Kings Highway");
   })
 
   it("shows the city of the person's address in an input field", () => {
-    expect(element(by.css("input#city")).getAttribute('ng-reflect-model')).toBe("Myrtle Beach");
+    expect(page.getNrmContent("input#city")).toBe("Myrtle Beach");
   })
 
   it("shows the state of the person's address in an input field", () => {
-    expect(element(by.css("input#state")).getAttribute('ng-reflect-model')).toBe("SC");
+    expect(page.getNrmContent("input#state")).toBe("SC");
   })
 
   it("shows the zip of the person's address in an input field", () => {
-    expect(element(by.css("input#zip")).getAttribute('ng-reflect-model')).toBe("29577");
+    expect(page.getNrmContent("input#zip")).toBe("29577");
   })
 
   it("goes back to search view if 'Back to search' button clicked, with no change", () => {

@@ -12,4 +12,8 @@ export class MercuryA4Page {
   getElemContent(id: string) {
     return element(by.id(`${id}`)).getText();
   }
+
+  getNrmContent(cssString: string) {
+    return element(by.css(cssString)).getAttribute('ng-reflect-model');
+  }
 }
