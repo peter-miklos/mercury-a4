@@ -6,15 +6,14 @@ describe('mercury-a4 App', () => {
 
   beforeEach(() => {
     page = new MercuryA4Page();
+    page.navigateTo("/");
   });
 
   it("displays the app title in the toolbar", () => {
-    page.navigateTo();
     expect(element(by.css("span#title")).getText()).toEqual("mercury-a4");
   });
 
   it("displays search md icon in the toolbar", () => {
-    page.navigateTo();
     expect(element(by.css("md-icon#search")).getText()).toEqual('search');
   })
 

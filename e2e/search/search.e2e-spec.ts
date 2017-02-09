@@ -1,13 +1,13 @@
-import { SearchPage }        from './search.po';
+import { MercuryA4Page }        from '../app.po';
 import { browser, element, by } from 'protractor';
 
 describe("Search feature", () => {
-  let page: SearchPage;
+  let page: MercuryA4Page;
   let allPersons: any = {};
 
   beforeEach(() => {
-    page = new SearchPage();
-    page.navigateTo();
+    page = new MercuryA4Page();
+    page.navigateTo("/search");
     allPersons = element.all(by.css("md-list-item"));
   })
 

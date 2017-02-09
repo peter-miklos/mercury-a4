@@ -1,11 +1,11 @@
-import { EditPage }             from './edit.po';
+import { MercuryA4Page }        from '../app.po';
 import { browser, element, by } from 'protractor';
 
 describe("Edit feature", () => {
-  let page: EditPage;
+  let page: MercuryA4Page;
 
   beforeEach(() => {
-    page = new EditPage();
+    page = new MercuryA4Page();
     page.navigateTo("/edit/2");
   })
 

@@ -1,11 +1,15 @@
 import { browser, element, by } from 'protractor';
 
 export class MercuryA4Page {
-  navigateTo() {
-    return browser.get('/');
+  navigateTo(link: string) {
+    return browser.get(link);
   }
 
   getParagraphText() {
     return element(by.css('h2')).getText();
+  }
+
+  getElemContent(id: string) {
+    return element(by.id(`${id}`)).getText();
   }
 }
